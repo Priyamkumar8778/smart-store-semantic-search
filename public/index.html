@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Smart Shop</title>
+  </head>
+  <body>
+    <h2>Add Item</h2>
+
+    <input id="name" placeholder="Item name" />
+    <input id="category" placeholder="Category" />
+    <input id="price" placeholder="Price" />
+
+    <button type="button" onclick="addItem()">Add</button>
+
+    <h2>Search</h2>
+
+    <input id="query" placeholder="give items under 5 rs" />
+    <button type="button" onclick="searchItems()">Search</button>
+
+    <pre id="output"></pre>
+
+    <script>
+      async function addItem() {
+        const res = await fetch("/items", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: document.getElementById("name").value,
+            category: document.getElementById("category").value,
+            price: Number(document.getElementById("price").value),
+          }),
+        });
+
+        const data = await res.json();
+        alert(JSON.stringify(data));
+      }
+
+      async function searchItems() {
+        const res = await fetch("/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: document.getElementById("query").value,
+          }),
+        });
+
+        const data = await res.json();
+        document.getElementById("output").textContent = JSON.stringify(
+          data,
+          null,
+          2
+        );
+      }
+    </script>
+  </body>
+</html>
